@@ -44,7 +44,7 @@ type Common struct {
 	Bordered        bool          `help:"Whether or not the module should be displayed with a border." values:"true, false" optional:"true" default:"true"`
 	Enabled         bool          `help:"Whether or not this module is executed and if its data displayed onscreen." values:"true, false" optional:"true" default:"false"`
 	Focusable       bool          `help:"Whether or  not this module is focusable." values:"true, false" optional:"true" default:"false"`
-	LanguageTag     string        `help:"The BCP 47 langauge tag to localize text to." values:"Any supported BCP 47 language tag." optional:"true" default:"en-CA"`
+	LanguageTag     string        `help:"The BCP 47 language tag to localize text to." values:"Any supported BCP 47 language tag." optional:"true" default:"en-CA"`
 	RefreshInterval time.Duration `help:"How often this module will update its data." values:"A positive integer followed by a time unit (ns, us, ms, s, m, h, or nothing which defaults to s)" optional:"true"`
 	Title           string        `help:"The title string to show when displaying this module" optional:"true"`
 
@@ -179,7 +179,7 @@ func (common *Common) RowColor(idx int) string {
 	)
 }
 
-func (common *Common) RightAlignFormat(width int) string {
+func (*Common) RightAlignFormat(width int) string {
 	borderOffset := 2
 	return fmt.Sprintf("%%%ds", width-borderOffset)
 }
@@ -212,7 +212,7 @@ func (common *Common) SetDocumentationPath(path string) {
 // Validations aggregates all the validations from all the sub-sections in Common into a
 // single array of validations
 func (common *Common) Validations() []Validatable {
-	validatables := []Validatable{}
+	var validatables []Validatable
 
 	for _, validation := range common.PositionSettings.Validations.validations {
 		validatables = append(validatables, validation)
