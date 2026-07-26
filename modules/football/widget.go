@@ -42,9 +42,10 @@ func NewWidget(tviewApp *tview.Application, redrawChan chan bool, pages *tview.P
 	leagueId, err := getLeague(settings.league)
 	if err != nil {
 		widget = Widget{
-			err:      fmt.Errorf("unable to get the league id for provided league '%s'", settings.league),
-			Client:   NewClient(settings.apiKey),
-			settings: settings,
+			TextWidget: view.NewTextWidget(tviewApp, redrawChan, pages, settings.Common),
+			err:        fmt.Errorf("unable to get the league id for provided league '%s'", settings.league),
+			Client:     NewClient(settings.apiKey),
+			settings:   settings,
 		}
 
 		return &widget
@@ -110,7 +111,7 @@ func (widget *Widget) GetStandings(leagueId int) string {
 	}
 
 	if len(l.Standings) == 0 {
-		return "Error fetching standings"
+		return "No standings found for this competition"
 	}
 
 	for _, i := range l.Standings[0].Table {
@@ -156,7 +157,7 @@ func (widget *Widget) GetMatches(leagueId int) string {
 	}
 
 	if len(l.Matches) == 0 {
-		return "Error fetching matches"
+		return fmt.Sprintf("No matches found between %s and %s", from, to)
 	}
 
 	for _, m := range l.Matches {
